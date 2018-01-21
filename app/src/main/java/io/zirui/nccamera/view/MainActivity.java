@@ -1,5 +1,6 @@
 package io.zirui.nccamera.view;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,10 +11,12 @@ import android.os.Bundle;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
+import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.view_pager) ViewPager viewPager;
+    @BindView(R.id.view_pager_tab) TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
+
+        getSupportActionBar().setElevation(0);
     }
 
     private class SectionPagerAdapter extends FragmentPagerAdapter{
@@ -32,12 +38,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return null;
+            return ImageGalleryFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
             return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page" + position;
         }
     }
 }
