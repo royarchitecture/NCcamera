@@ -20,17 +20,12 @@ import io.zirui.nccamera.model.Shot;
 
 public class ImageGalleryFragment extends Fragment {
 
-    public static final String KEY_PAGE = "page";
+    public static final String PAGE_TITLE = "Gallery";
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     @NonNull
-    public static ImageGalleryFragment newInstance(int page){
-//        Bundle args = new Bundle();
-//        args.putInt(KEY_PAGE, page);
-//
-//        ImageGalleryFragment imageGalleryFragment = new ImageGalleryFragment();
-//        imageGalleryFragment.setArguments(args);
+    public static ImageGalleryFragment newInstance(){
         return new ImageGalleryFragment();
     }
 
@@ -46,7 +41,6 @@ public class ImageGalleryFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        int page = getArguments().getInt(KEY_PAGE);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         ImageGalleryAdapter adapter = new ImageGalleryAdapter(new ArrayList<Shot>());
         recyclerView.setAdapter(adapter);
