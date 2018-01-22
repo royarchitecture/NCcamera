@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NCcamera</string>
+    <string name="shot_image">shot image</string>
 </resources>

@@ -7,4 +7,5 @@
     <color name="tab_indicator_color">@android:color/white</color>
     <color name="tab_text_color">#66FFFFFF</color>
     <color name="tab_text_color_highlight">@android:color/white</color>
+    <color name="place_holder_bg">#33000000</color>
 </resources>
