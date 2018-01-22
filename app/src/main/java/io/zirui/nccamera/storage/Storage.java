@@ -49,25 +49,47 @@ public class Storage {
     }
 
     public static List<File> loadData(File file) {
-        if (!file.exists()) {
-            return new ArrayList<>();
-        }
-        return new ArrayList<File>(Arrays.asList(file.listFiles()));
+        return getAllFiles(file, "jpg");
     }
 
-    public static File createImageFile(@NonNull Activity activity) throws IOException {
+    private static List<File> getAllFiles(File f, String _type) {
+        if (!f.exists()) {
+            return new ArrayList<>();
+        }
+
+        File[] files = f.listFiles();
+
+        if(files==null){
+            return new ArrayList<>();
+        }
+
+        List<File> fileList = new ArrayList<>();
+        for (File _file : files) {
+            if(_file.isFile() && _file.getName().endsWith(_type)){
+                String _name=_file.getName();
+                String filePath = _file.getAbsolutePath();
+                try {
+                    fileList.add(_file);
+                }catch (Exception e){
+                }
+            }
+        }
+        return fileList;
+    }
+
+    public static void createImageFile(@NonNull Activity activity) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getStorageDir(activity);
-        File image = File.createTempFile(
+        currentFile = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+        mCurrentPhotoPath = currentFile.getAbsolutePath();
+//        return image;
     }
 
 }

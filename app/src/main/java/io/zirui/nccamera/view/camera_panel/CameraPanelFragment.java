@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,16 +62,10 @@ public class CameraPanelFragment extends BaseFragment {
 
     private class NewShotTask extends AsyncTask<Void, Void, Shot>{
 
-        private Uri uri;
-
-        private NewShotTask(){
-            this.uri = Uri.parse(Storage.mCurrentPhotoPath);
-        }
-
         @Override
         protected Shot doInBackground(Void... params) {
             try{
-                return new Shot(uri);
+                return new Shot(Storage.currentFile);
             }catch (Exception e){
                 e.printStackTrace();
                 return null;

@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Uri imageUri = Uri.parse(Storage.mCurrentPhotoPath);
             // add image to recyclerView
             CameraPanelFragment cameraPanel_page = (CameraPanelFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + SECTION_CURRENT);
             cameraPanel_page.addShot();

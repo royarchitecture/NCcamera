@@ -33,7 +33,8 @@ public class Camera {
             // Create the File where the photo should go
             File photoFile;
             try {
-                photoFile = Storage.createImageFile(activity);
+                Storage.createImageFile(activity);
+                photoFile = Storage.currentFile;
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 return;
@@ -42,7 +43,7 @@ public class Camera {
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(activity.getBaseContext(),
                         BuildConfig.APPLICATION_ID + ".provider",
-                        Storage.createImageFile(activity));
+                        photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }

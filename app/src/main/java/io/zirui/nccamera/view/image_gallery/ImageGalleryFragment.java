@@ -66,7 +66,7 @@ public class ImageGalleryFragment extends BaseFragment {
         @Override
         protected File doInBackground(Void... voids) {
             try {
-                return new File(Storage.mCurrentPhotoPath);
+                return Storage.currentFile;
             }catch (Exception e){
                 e.printStackTrace();
                 return null;

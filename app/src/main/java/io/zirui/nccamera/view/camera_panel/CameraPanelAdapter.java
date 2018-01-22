@@ -35,9 +35,9 @@ public class CameraPanelAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Shot shot = data.get(position);
         CameraPanelViewHolder cameraPanelViewHolder = (CameraPanelViewHolder) holder;
-        File file = new File(shot.uri.getPath());
+//        File file = new File(shot.uri.getPath());
         try {
-            InputStream ims = new FileInputStream(file);
+            InputStream ims = new FileInputStream(shot.file);
             cameraPanelViewHolder.imageView.setImageBitmap(BitmapFactory.decodeStream(ims));
         } catch (FileNotFoundException e) {
             return;
