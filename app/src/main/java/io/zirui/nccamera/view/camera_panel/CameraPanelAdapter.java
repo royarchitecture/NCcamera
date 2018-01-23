@@ -14,6 +14,7 @@ import java.util.List;
 
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
+import io.zirui.nccamera.utils.ImageUtils;
 
 
 public class CameraPanelAdapter extends RecyclerView.Adapter {
@@ -37,9 +38,10 @@ public class CameraPanelAdapter extends RecyclerView.Adapter {
         CameraPanelViewHolder cameraPanelViewHolder = (CameraPanelViewHolder) holder;
 //        File file = new File(shot.uri.getPath());
         try {
-            InputStream ims = new FileInputStream(shot.file);
-            cameraPanelViewHolder.imageView.setImageBitmap(BitmapFactory.decodeStream(ims));
-        } catch (FileNotFoundException e) {
+//            InputStream ims = new FileInputStream(shot.file);
+//            cameraPanelViewHolder.imageView.setImageBitmap(BitmapFactory.decodeStream(ims));
+            cameraPanelViewHolder.imageView.setImageBitmap(ImageUtils.getThumnailFromImage(shot.path));
+        } catch (Exception e) {
             return;
         }
 //        cameraPanelViewHolder.imageView.setImageResource(R.drawable.shot_placeholder);

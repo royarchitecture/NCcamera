@@ -1,12 +1,16 @@
 package io.zirui.nccamera.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 
 import java.io.IOException;
 
 public class ImageUtils {
+
+    private static final int THUMSIZE = 64;
 
     public static Bitmap getProperImage(Bitmap bitmap, String photoPath){
         ExifInterface ei = null;
@@ -18,7 +22,7 @@ public class ImageUtils {
         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_UNDEFINED);
 
-        Bitmap rotatedBitmap = null;
+        Bitmap rotatedBitmap;
 
         switch(orientation) {
 
@@ -47,5 +51,9 @@ public class ImageUtils {
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
+    }
+
+    public static Bitmap getThumnailFromImage(String path){
+        return ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), THUMSIZE, THUMSIZE);
     }
 }

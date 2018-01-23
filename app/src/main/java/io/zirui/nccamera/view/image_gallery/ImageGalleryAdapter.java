@@ -16,14 +16,14 @@ import java.util.List;
 
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
+import io.zirui.nccamera.utils.ImageUtils;
 import io.zirui.nccamera.view.camera_panel.CameraPanelViewHolder;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter{
 
-    private List<File> data;
+    private List<Shot> data;
 
-
-    public ImageGalleryAdapter(List<File> data){
+    public ImageGalleryAdapter(List<Shot> data){
         this.data = data;
     }
 
@@ -36,14 +36,14 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        File file = data.get(position);
-        System.out.println("---------------" + file.toString() + "-----------------");
+        Shot shot = data.get(position);
         ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
 //        imageViewHolder.imageView.setImageResource(R.drawable.shot_placeholder);
         try {
-            InputStream ims = new FileInputStream(file);
-            imageViewHolder.imageView.setImageBitmap(BitmapFactory.decodeStream(ims));
-        } catch (FileNotFoundException e) {
+//            InputStream ims = new FileInputStream(shot.file);
+//            imageViewHolder.imageView.setImageBitmap(BitmapFactory.decodeStream(ims));
+            imageViewHolder.imageView.setImageBitmap(ImageUtils.getThumnailFromImage(shot.path));
+        } catch (Exception e) {
             return;
         }
     }
@@ -53,8 +53,8 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
         return data.size();
     }
 
-    public void prepend(File file){
-        this.data.add(0, file);
+    public void prepend(Shot shot){
+        this.data.add(0, shot);
         notifyDataSetChanged();
     }
 }

@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import io.zirui.nccamera.model.Shot;
+
 
 public class Storage {
 
@@ -48,28 +50,24 @@ public class Storage {
         return storageDir;
     }
 
-    public static List<File> loadData(File file) {
+    public static List<Shot> loadData(File file) {
         return getAllFiles(file, "jpg");
     }
 
-    private static List<File> getAllFiles(File f, String _type) {
+    private static List<Shot> getAllFiles(File f, String _type) {
         if (!f.exists()) {
             return new ArrayList<>();
         }
-
         File[] files = f.listFiles();
-
         if(files==null){
             return new ArrayList<>();
         }
-
-        List<File> fileList = new ArrayList<>();
+        List<Shot> fileList = new ArrayList<>();
         for (File _file : files) {
             if(_file.isFile() && _file.getName().endsWith(_type)){
-                String _name=_file.getName();
                 String filePath = _file.getAbsolutePath();
                 try {
-                    fileList.add(_file);
+                    fileList.add(new Shot(_file, filePath));
                 }catch (Exception e){
                 }
             }

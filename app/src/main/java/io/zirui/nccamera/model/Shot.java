@@ -8,11 +8,14 @@ import java.io.File;
 public class Shot {
     public Uri uri;
     public String name;
-    public String description;
+    public String path;
     public File file;
 
-    public Shot(File file){
+    public Shot(){}
+
+    public Shot(File file, String path){
         this.file = file;
+        this.path = path;
     }
 
 }
