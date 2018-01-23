@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.getTabAt(SECTION_CURRENT).setIcon(R.drawable.ic_camera_alt_white_24dp);
+        tabLayout.getTabAt(SECTION_GALLERY).setIcon(R.drawable.ic_favorite_white_24dp);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
