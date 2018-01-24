@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = CameraPanelFragment.newInstance();
                     break;
                 case SECTION_GALLERY:
-                    fragment = ImageGalleryFragment.newInstance(MainActivity.this);
+                    fragment = ImageGalleryFragment.newInstance();
                     break;
 
             }

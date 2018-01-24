@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.HashMap;
 import java.util.List;
 
 import io.zirui.nccamera.R;
@@ -16,11 +15,9 @@ import io.zirui.nccamera.utils.ImageUtils;
 public class CameraPanelAdapter extends RecyclerView.Adapter {
 
     private List<Shot> data;
-//    private HashMap<String, Integer> map;
 
     public CameraPanelAdapter(List<Shot> data){
         this.data = data;
-//        this.map = new HashMap<>();
     }
 
     @Override
@@ -43,17 +40,11 @@ public class CameraPanelAdapter extends RecyclerView.Adapter {
     }
 
     public void prepend(Shot shot){
-//        this.map.put(shot.path, data.size());
         this.data.add(0, shot);
         notifyDataSetChanged();
     }
 
     public void refresh(String path){
-//        if (map.containsKey(path)){
-
-//            data.remove((int) map.get(path));
-//            map.remove(path);
-//        }
         for (int i = 0; i < data.size(); i++){
             if(data.get(i).path.equals(path)){
                 data.remove(i);

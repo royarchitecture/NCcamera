@@ -1,7 +1,5 @@
 package io.zirui.nccamera.view.camera_panel;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,19 +8,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.Storage;
-import io.zirui.nccamera.view.MainActivity;
 import io.zirui.nccamera.view.base.BaseFragment;
 
 public class CameraPanelFragment extends BaseFragment {

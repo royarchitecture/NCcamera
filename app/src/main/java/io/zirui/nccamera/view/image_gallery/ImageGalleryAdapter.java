@@ -1,34 +1,14 @@
 package io.zirui.nccamera.view.image_gallery;
 
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.utils.ImageUtils;
-import io.zirui.nccamera.utils.ModelUtils;
-import io.zirui.nccamera.view.camera_panel.CameraPanelViewHolder;
-import io.zirui.nccamera.view.image_detail.ImageActivity;
-import io.zirui.nccamera.view.image_detail.ImageFragment;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter{
 

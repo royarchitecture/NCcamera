@@ -1,8 +1,6 @@
 package io.zirui.nccamera.view.image_gallery;
 
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import butterknife.BindView;

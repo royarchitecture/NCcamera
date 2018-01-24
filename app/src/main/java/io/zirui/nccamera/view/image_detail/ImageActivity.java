@@ -13,9 +13,7 @@ import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.utils.ModelUtils;
-import io.zirui.nccamera.view.MainActivity;
 import io.zirui.nccamera.view.base.SingleFragmentActivity;
-import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 
 public class ImageActivity extends SingleFragmentActivity {
