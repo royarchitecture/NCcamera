@@ -3,23 +3,18 @@ package io.zirui.nccamera.storage;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import io.zirui.nccamera.model.Shot;
-import io.zirui.nccamera.utils.ModelUtils;
-import io.zirui.nccamera.view.image_detail.ImageFragment;
 
 
 public class Storage {

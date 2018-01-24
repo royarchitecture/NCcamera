@@ -53,7 +53,7 @@ public class ImageUtils {
                 matrix, true);
     }
 
-    public static Bitmap getThumnailFromImage(String path){
+    public static Bitmap getThumbnailFromImage(String path){
         return ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), THUMSIZE, THUMSIZE);
     }
 }

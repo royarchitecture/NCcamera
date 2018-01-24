@@ -59,11 +59,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
                 }
             }
         });
-        try {
-            imageViewHolder.imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumnailFromImage(shot.path), shot.path));
-        } catch (Exception e) {
-            return;
-        }
+        imageViewHolder.imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumbnailFromImage(shot.path), shot.path));
     }
 
     @Override
@@ -77,7 +73,8 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     }
 
     public void refresh(List<Shot> data){
-        this.data = data;
+        this.data.clear();
+        this.data.addAll(data);
         notifyDataSetChanged();
     }
 

@@ -42,7 +42,9 @@ import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.utils.ModelUtils;
+import io.zirui.nccamera.view.MainActivity;
 import io.zirui.nccamera.view.base.BaseFragment;
+import io.zirui.nccamera.view.camera_panel.CameraPanelFragment;
 import io.zirui.nccamera.view.image_detail.ImageActivity;
 import io.zirui.nccamera.view.image_detail.ImageFragment;
 
@@ -60,7 +62,7 @@ public class ImageGalleryFragment extends BaseFragment {
     private ImageGalleryAdapter adapter;
 
     @NonNull
-    public static ImageGalleryFragment newInstance(){
+    public static ImageGalleryFragment newInstance(Context context){
         return new ImageGalleryFragment();
     }
 
@@ -96,7 +98,7 @@ public class ImageGalleryFragment extends BaseFragment {
         if (resultCode == RESULT_OK && requestCode == REQ_CODE_IMAGE_DETAIL_EDIT){
             String shot_path = data.getStringExtra(ImageActivity.KEY_IMAGE_DETAIL_PATH);
             if(shot_path != null){
-                refreshShots();
+                refreshShots(shot_path);
             }
         }
     }
@@ -109,9 +111,13 @@ public class ImageGalleryFragment extends BaseFragment {
             loadShotTask.execute();
     }
 
-    public void refreshShots(){
+    public void refreshShots(String shot_path){
         Storage storage = Storage.getInstance(getActivity());
         adapter.refresh(storage.loadData(storage.storageDir));
+        CameraPanelFragment cameraPanel_page = (CameraPanelFragment) getActivity()
+                                                                    .getSupportFragmentManager()
+                                                                    .findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + MainActivity.SECTION_CURRENT);
+        cameraPanel_page.refreshShots(shot_path);
     }
 
     private class LoadShotTask extends AsyncTask<Void, Void, Shot>{

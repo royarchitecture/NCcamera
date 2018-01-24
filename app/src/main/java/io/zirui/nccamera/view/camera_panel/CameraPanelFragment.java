@@ -54,6 +54,10 @@ public class CameraPanelFragment extends BaseFragment {
             newShotTask.execute();
     }
 
+    public void refreshShots(String path){
+        adapter.refresh(path);
+    }
+
     private class NewShotTask extends AsyncTask<Void, Void, Shot>{
 
         @Override
