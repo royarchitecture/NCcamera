@@ -12,11 +12,8 @@ import io.zirui.nccamera.view.base.BaseViewHolder;
 
 public class ImageViewHolder extends BaseViewHolder {
 
-//    @BindView(R.id.shot_card_image) ImageView imageView;
-    @BindView(R.id.shot_card_thumbnail) ImageView thumbnail;
-    @BindView(R.id.shot_clickable_cover) View thumbnailButton;
-    @BindView(R.id.expanded_image) ImageView expandedImageView;
-    @BindView(R.id.zoom_container) FrameLayout container;
+    @BindView(R.id.shot_card_image) ImageView imageView;
+    @BindView(R.id.shot_clickable_cover) View clickableCover;
 
     public ImageViewHolder(View itemView) {
         super(itemView);

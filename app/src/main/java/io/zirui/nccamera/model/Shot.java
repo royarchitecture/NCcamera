@@ -10,12 +10,14 @@ public class Shot {
     public String name;
     public String path;
     public File file;
+    public String title;
 
     public Shot(){}
 
     public Shot(File file, String path){
         this.file = file;
         this.path = path;
+        this.title = "Nature!";
     }
 
 }

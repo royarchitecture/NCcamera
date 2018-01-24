@@ -33,4 +33,8 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:1.8.0'
     compile 'com.facebook.fresco:animated-webp:1.8.0'
     compile 'com.facebook.fresco:webpsupport:1.8.0'
+    compile 'com.alexvasilkov:gesture-views:2.4.1'
+    implementation 'com.alexvasilkov:android-commons:2.0.2'
+    implementation 'com.alexvasilkov:events:1.0.0'
+    compile 'com.google.code.gson:gson:2.8.2'
 }

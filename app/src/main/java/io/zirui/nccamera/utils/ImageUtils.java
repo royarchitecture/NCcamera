@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ImageUtils {
 
-    private static final int THUMSIZE = 64;
+    private static final int THUMSIZE = 1000;
 
     public static Bitmap getProperImage(Bitmap bitmap, String photoPath){
         ExifInterface ei = null;

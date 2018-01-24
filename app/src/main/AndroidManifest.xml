@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.base.SingleFragmentActivity" />
+        <activity android:name=".view.image_detail.ImageActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -34,7 +34,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".view.zoom.ZoomActivity"></activity>
     </application>
 
 </manifest>

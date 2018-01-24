@@ -40,7 +40,7 @@ public class CameraPanelAdapter extends RecyclerView.Adapter {
         try {
 //            InputStream ims = new FileInputStream(shot.file);
 //            cameraPanelViewHolder.imageView.setImageBitmap(BitmapFactory.decodeStream(ims));
-            cameraPanelViewHolder.imageView.setImageBitmap(ImageUtils.getThumnailFromImage(shot.path));
+            cameraPanelViewHolder.imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumnailFromImage(shot.path), shot.path));
         } catch (Exception e) {
             return;
         }

@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">NCcamera</string>
     <string name="shot_image">shot image</string>
+    <string name="menu_info">Info</string>
+
+    <string name="menu_enable_pan">Pan</string>
+    <string name="menu_enable_zoom">Zoom</string>
+    <string name="menu_enable_rotation">Rotation</string>
+    <string name="menu_restrict_rotation">Restrict rotation</string>
+    <string name="menu_enable_overscroll_x">Overscroll X</string>
+    <string name="menu_enable_overscroll_y">Overscroll Y</string>
+    <string name="menu_enable_overzoom">Overzoom</string>
+    <string name="menu_enable_exit">Exit gesture</string>
+    <string name="menu_fill_viewport">Fill viewport</string>
+    <string name="menu_fit_method">Fit method</string>
+    <string name="menu_gravity">Gravity</string>
+    <string name="menu_enable_slow">Slow animations</string>
+    <string name="menu_enable_overlay">Debug overlay</string>
+    <string name="delete">Delete</string>
 </resources>
