@@ -4,6 +4,7 @@ package io.zirui.nccamera.model;
 import android.net.Uri;
 
 import java.io.File;
+import java.util.Random;
 
 public class Shot {
     public Uri uri;
@@ -17,8 +18,8 @@ public class Shot {
     public Shot(File file, String path){
         this.file = file;
         this.path = path;
-        String[] sections = path.split("/");
-        this.name = sections[sections.length - 1].split(".")[0];
+        Random rand = new Random();
+        this.name = rand.nextInt() + "image";
         this.title = "Nature!";
     }
 

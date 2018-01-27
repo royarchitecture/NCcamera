@@ -15,7 +15,6 @@ import java.util.List;
 
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
-import io.zirui.nccamera.utils.ImageUtils;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter{
 
@@ -38,18 +37,18 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Shot shot = data.get(position);
         final ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
-        ViewCompat.setTransitionName(imageViewHolder.imageView, shot.name);
+        System.out.println(shot.name);
         Glide.with(imageViewHolder.imageView.getContext())
                 .load(new File(Uri.parse(shot.path).getPath()))
                 .thumbnail(0.5f)
                 .into(imageViewHolder.imageView);
+        ViewCompat.setTransitionName(imageViewHolder.imageView, shot.name);
         imageViewHolder.clickableCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickImageListener.onClick(holder.getAdapterPosition(), shot, imageViewHolder.imageView);
             }
         });
-//        imageViewHolder.imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumbnailFromImage(shot.path), shot.path));
     }
 
     @Override

@@ -44,18 +44,6 @@ public class ImageFragment extends Fragment {
         return imageFragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        postponeEnterTransition();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            setSharedElementEnterTransition(
-                    TransitionInflater.from(getContext())
-                    .inflateTransition(android.R.transition.move)
-            );
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,8 +59,6 @@ public class ImageFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setTransitionName(transitionName);
         }
-//        imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumbnailFromImage(shot.path), shot.path));
-        System.out.println("-------------------" + shot.path + "--------------------");
         Glide.with(getActivity())
                 .asBitmap()
                 .load(new File(Uri.parse(shot.path).getPath()))

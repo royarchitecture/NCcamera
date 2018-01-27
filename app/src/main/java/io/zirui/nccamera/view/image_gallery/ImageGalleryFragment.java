@@ -1,7 +1,6 @@
 package io.zirui.nccamera.view.image_gallery;
 
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,26 +10,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.Storage;
-import io.zirui.nccamera.view.MainActivity;
-import io.zirui.nccamera.view.camera_panel.CameraPanelFragment;
-import io.zirui.nccamera.view.image_detail.ImageActivity;
 import io.zirui.nccamera.view.image_detail.ImageFragment;
 import io.zirui.nccamera.view.image_viewpager.ImageViewPagerFragment;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class ImageGalleryFragment extends Fragment {
@@ -73,7 +64,7 @@ public class ImageGalleryFragment extends Fragment {
         adapter = new ImageGalleryAdapter(Storage.loadData(storage.storageDir), new ImageGalleryAdapter.OnClickImageListener() {
             @Override
             public void onClick(int position, Shot shot, ImageView imageView) {
-                ImageViewPagerFragment imageViewPagerFragment = ImageViewPagerFragment.newInstance(position, new ArrayList<>(adapter.data));
+                ImageViewPagerFragment imageViewPagerFragment = ImageViewPagerFragment.newInstance(position, adapter.data);
                 getFragmentManager()
                         .beginTransaction()
                         .addSharedElement(imageView, ViewCompat.getTransitionName(imageView))
