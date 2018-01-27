@@ -26,8 +26,8 @@ public class ImageActivity extends SingleFragmentActivity {
     @NonNull
     @Override
     protected Fragment newFragment() {
-        bundle = getIntent().getExtras();
-        return ImageFragment.newInstance(bundle);
+        Shot shot = new Shot();
+        return ImageFragment.newInstance(shot);
     }
 
     @NonNull
