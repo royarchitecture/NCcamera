@@ -1,27 +1,16 @@
 package io.zirui.nccamera.view;
 
-import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.camera.Camera;
-import io.zirui.nccamera.view.camera_panel.CameraPanelFragment;
 import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int SECTION_CURRENT = 0;
     public static final int SECTION_GALLERY = 1;
 
-//    @BindView(R.id.content) FrameLayout content;
 //    @BindView(R.id.view_pager_tab) TabLayout tabLayout;
-//    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
 
     @Override
@@ -40,22 +29,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-//        getSupportActionBar().setElevation(0);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-        ImageGalleryFragment imageGalleryFragment = ImageGalleryFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.content, imageGalleryFragment)
+                .add(R.id.content, ImageGalleryFragment.newInstance())
                 .commit();
 //
 //        setupViewPager();
 //
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Camera.takePhoto(MainActivity.this);
-//            }
-//        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Camera.takePhoto(MainActivity.this);
+            }
+        });
     }
 
 //    private void setupViewPager(){

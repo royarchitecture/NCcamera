@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -59,7 +60,6 @@ public class ImageGalleryFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycler_view, container, false);
-        System.out.println("---------------------ImageGalleryFragment is ok--------------------");
         ButterKnife.bind(this, view);
         return view;
     }
@@ -76,6 +76,7 @@ public class ImageGalleryFragment extends Fragment {
                 ImageViewPagerFragment imageViewPagerFragment = ImageViewPagerFragment.newInstance(position, new ArrayList<>(adapter.data));
                 getFragmentManager()
                         .beginTransaction()
+                        .addSharedElement(imageView, ViewCompat.getTransitionName(imageView))
                         .addToBackStack(TAG)
                         .replace(R.id.content, imageViewPagerFragment)
                         .commit();
@@ -84,32 +85,12 @@ public class ImageGalleryFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQ_CODE_IMAGE_DETAIL_EDIT){
-            String shot_path = data.getStringExtra(ImageActivity.KEY_IMAGE_DETAIL_PATH);
-            if(shot_path != null){
-                refreshShots(shot_path);
-            }
-        }
-    }
-
     public void addShot(){
         LoadShotTask loadShotTask = new LoadShotTask();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             loadShotTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             loadShotTask.execute();
-    }
-
-    public void refreshShots(String shot_path){
-        Storage storage = Storage.getInstance(getActivity());
-        adapter.refresh(storage.loadData(storage.storageDir));
-        CameraPanelFragment cameraPanel_page = (CameraPanelFragment) getActivity()
-                                                                    .getSupportFragmentManager()
-                                                                    .findFragmentByTag("android:switcher:" + R.id.content + ":" + MainActivity.SECTION_CURRENT);
-        cameraPanel_page.refreshShots(shot_path);
     }
 
     private class LoadShotTask extends AsyncTask<Void, Void, Shot>{

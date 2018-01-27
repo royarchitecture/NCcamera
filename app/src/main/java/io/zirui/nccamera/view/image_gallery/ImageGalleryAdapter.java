@@ -1,6 +1,7 @@
 package io.zirui.nccamera.view.image_gallery;
 
 import android.net.Uri;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.shot_card, parent, false);
-        System.out.println("-------------------" + data.size() + "----------------------");
         return new ImageViewHolder(view);
     }
 
@@ -38,6 +38,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Shot shot = data.get(position);
         final ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
+        ViewCompat.setTransitionName(imageViewHolder.imageView, shot.name);
         Glide.with(imageViewHolder.imageView.getContext())
                 .load(new File(Uri.parse(shot.path).getPath()))
                 .thumbnail(0.5f)
@@ -48,7 +49,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
                 onClickImageListener.onClick(holder.getAdapterPosition(), shot, imageViewHolder.imageView);
             }
         });
-        imageViewHolder.imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumbnailFromImage(shot.path), shot.path));
+//        imageViewHolder.imageView.setImageBitmap(ImageUtils.getProperImage(ImageUtils.getThumbnailFromImage(shot.path), shot.path));
     }
 
     @Override
@@ -58,12 +59,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
 
     public void prepend(Shot shot){
         this.data.add(0, shot);
-        notifyDataSetChanged();
-    }
-
-    public void refresh(List<Shot> data){
-        this.data.clear();
-        this.data.addAll(data);
         notifyDataSetChanged();
     }
 

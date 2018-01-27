@@ -17,6 +17,8 @@ public class Shot {
     public Shot(File file, String path){
         this.file = file;
         this.path = path;
+        String[] sections = path.split("/");
+        this.name = sections[sections.length - 1].split(".")[0];
         this.title = "Nature!";
     }
 
