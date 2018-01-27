@@ -87,7 +87,6 @@ public class Storage {
         );
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = currentFile.getAbsolutePath();
-//        return image;
     }
 
     public static void deleteFile(File file) {
