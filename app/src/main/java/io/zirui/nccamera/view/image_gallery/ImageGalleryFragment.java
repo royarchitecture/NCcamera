@@ -25,7 +25,6 @@ import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.utils.ModelUtils;
 import io.zirui.nccamera.view.image_detail.ImageActivity;
-import io.zirui.nccamera.view.image_detail.ImageFragment;
 import io.zirui.nccamera.view.image_viewpager.ImageViewPagerActivity;
 import io.zirui.nccamera.view.image_viewpager.ImageViewPagerFragment;
 
@@ -70,7 +69,6 @@ public class ImageGalleryFragment extends Fragment {
         recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_small))));
         Storage storage = Storage.getInstance(getActivity());
         List<Shot> firstData = Storage.loadData(storage.storageDir);
-        System.out.println("--------------------------" + firstData.size() + "--------------------------------");
         adapter = new ImageGalleryAdapter(firstData, new ImageGalleryAdapter.OnClickImageListener() {
             @Override
             public void onClick(int position, Shot shot) {
@@ -82,7 +80,6 @@ public class ImageGalleryFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
-        System.out.println("--------------------------adapter setup--------------------------------");
     }
 
     @Override
@@ -132,12 +129,10 @@ public class ImageGalleryFragment extends Fragment {
 
         @Override
         protected Shot doInBackground(Void... voids) {
-            try {
-                return new Shot(Storage.currentFile, Storage.mCurrentPhotoPath);
-            }catch (Exception e){
-                e.printStackTrace();
+            if(Storage.currentFile.length() == 0){
                 return null;
             }
+            return new Shot(Storage.currentFile, Storage.mCurrentPhotoPath);
         }
 
         @Override

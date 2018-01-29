@@ -21,7 +21,7 @@ public class Storage {
 
     public static String mCurrentPhotoPath;
     public static File currentFile;
-    public static int fileLock = 0;
+//    public static int fileLock = 0;
 
     public File storageDir;
 
@@ -65,12 +65,18 @@ public class Storage {
         }
         List<Shot> fileList = new ArrayList<>();
         for (File _file : files) {
-            if(_file.isFile() && _file.getName().endsWith(_type)){
+            if(_file.isFile() && _file.getName().endsWith(_type) && _file.length() != 0){
                 String filePath = _file.getAbsolutePath();
                 try {
                     fileList.add(new Shot(_file, filePath));
                 }catch (Exception e){
                 }
+//                if (_file.length() == 0){
+//                    _file.delete();
+//                }else{
+//
+//                }
+
             }
         }
         return fileList;
@@ -88,8 +94,7 @@ public class Storage {
         );
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = currentFile.getAbsolutePath();
-        fileLock = fileLock >= 2 ? 2 : fileLock + 1;
-        System.out.println("--------------------------created a file--------------------------------");
+//        fileLock = fileLock >= 2 ? 2 : fileLock + 1;
     }
 
     public static void deleteFile(File file) {

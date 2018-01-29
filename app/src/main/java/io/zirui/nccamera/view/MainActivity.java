@@ -12,7 +12,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.camera.Camera;
-import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         // App starts with camera interface
         Camera.takePhoto(MainActivity.this);
-        System.out.println("--------------------------first shot begin--------------------------------");
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && Storage.fileLock >= 2) {
+        if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             ImageGalleryFragment imageGallery_page = (ImageGalleryFragment) getSupportFragmentManager().findFragmentById(R.id.content);
             imageGallery_page.addShot();
-            System.out.println("--------------------------took a shot--------------------------------");
         }
     }
 
