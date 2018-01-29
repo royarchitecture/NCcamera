@@ -34,6 +34,7 @@ public class ImageAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
         InputStream ims;
+
         try {
             ims = new FileInputStream(shot.file);
             imageViewHolder.image.setImageBitmap(ImageUtils.getProperImage(BitmapFactory.decodeStream(ims), shot.path));

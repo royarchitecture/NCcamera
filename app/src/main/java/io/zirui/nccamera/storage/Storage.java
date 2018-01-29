@@ -21,6 +21,7 @@ public class Storage {
 
     public static String mCurrentPhotoPath;
     public static File currentFile;
+    public static int fileLock = 0;
 
     public File storageDir;
 
@@ -43,11 +44,11 @@ public class Storage {
     }
 
     public static File getStorageDir(@NonNull Activity activity){
-        File storageDir = new File(activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), folderName);
-        if(!storageDir.exists()){
-            storageDir.mkdir();
+        Storage instance = getInstance(activity);
+        if(!instance.storageDir.exists()){
+            instance.storageDir.mkdir();
         }
-        return storageDir;
+        return instance.storageDir;
     }
 
     public static List<Shot> loadData(File file) {
@@ -87,6 +88,8 @@ public class Storage {
         );
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = currentFile.getAbsolutePath();
+        fileLock = fileLock >= 2 ? 2 : fileLock + 1;
+        System.out.println("--------------------------created a file--------------------------------");
     }
 
     public static void deleteFile(File file) {

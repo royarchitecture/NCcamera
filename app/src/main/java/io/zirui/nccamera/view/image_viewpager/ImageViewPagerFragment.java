@@ -13,19 +13,23 @@ import android.view.ViewGroup;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
+import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.utils.ModelUtils;
 
 
 public class ImageViewPagerFragment extends Fragment {
 
-    private static final String EXTRA_INITIAL_POS = "initial_pos";
-    private static final String EXTRA_IMAGES = "images";
+    public static final String EXTRA_INITIAL_POS = "initial_pos";
+    public static final String EXTRA_IMAGES = "images";
+
+    public ImageViewPagerAdapter adapter;
 
     @BindView(R.id.shot_view_pager) ViewPager viewPager;
 
@@ -36,15 +40,6 @@ public class ImageViewPagerFragment extends Fragment {
         args.putString(EXTRA_IMAGES, ModelUtils.toString(shots, new TypeToken<List<Shot>>(){}));
         imageViewPagerFragment.setArguments(args);
         return imageViewPagerFragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        postponeEnterTransition();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-        }
     }
 
     @Nullable
@@ -60,8 +55,12 @@ public class ImageViewPagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         int currentPos = getArguments().getInt(EXTRA_INITIAL_POS);
         List<Shot> shots = ModelUtils.toObject(getArguments().getString(EXTRA_IMAGES), new TypeToken<List<Shot>>(){});
-        ImageViewPagerAdapter imageViewPagerAdapter = new ImageViewPagerAdapter(getChildFragmentManager(), shots);
-        viewPager.setAdapter(imageViewPagerAdapter);
+        adapter = new ImageViewPagerAdapter(getChildFragmentManager(), shots);
+        viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(currentPos);
+    }
+
+    public void deleteCurrentItem(){
+        Storage.deleteFile(adapter.shots.get(viewPager.getCurrentItem()).file);
     }
 }

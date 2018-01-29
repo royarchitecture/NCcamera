@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.image_detail.ImageActivity" />
+        <activity android:name=".view.image_viewpager.ImageViewPagerActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

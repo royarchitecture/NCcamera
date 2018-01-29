@@ -13,7 +13,7 @@ import io.zirui.nccamera.view.image_detail.ImageFragment;
 
 public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<Shot> shots;
+    public List<Shot> shots;
 
     public ImageViewPagerAdapter(FragmentManager fm, List<Shot> shots) {
         super(fm);

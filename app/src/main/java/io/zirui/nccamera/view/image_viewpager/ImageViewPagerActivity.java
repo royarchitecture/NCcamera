@@ -1,4 +1,4 @@
-package io.zirui.nccamera.view.image_detail;
+package io.zirui.nccamera.view.image_viewpager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,24 +9,30 @@ import android.view.MenuItem;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.util.List;
+
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.utils.ModelUtils;
 import io.zirui.nccamera.view.base.SingleFragmentActivity;
+import io.zirui.nccamera.view.image_detail.ImageFragment;
 
 
-public class ImageActivity extends SingleFragmentActivity {
-
+public class ImageViewPagerActivity extends SingleFragmentActivity {
     public static final String KEY_SHOT_TITLE = "shot_title";
+    public static final String KEY_SHOT_DELETE = "shot_delete";
 
-    public Bundle bundle;
+    private ImageViewPagerFragment fragment;
 
     @NonNull
     @Override
     protected Fragment newFragment() {
-        Shot shot = new Shot();
-        return ImageFragment.newInstance(shot, shot.path);
+        Bundle bundle = getIntent().getExtras();
+        fragment = ImageViewPagerFragment.newInstance(bundle.getInt(ImageViewPagerFragment.EXTRA_INITIAL_POS),
+                                          ModelUtils.toObject(bundle.getString(ImageViewPagerFragment.EXTRA_IMAGES), new TypeToken<List<Shot>>(){
+                                          }));
+        return fragment;
     }
 
     @NonNull
@@ -44,13 +50,12 @@ public class ImageActivity extends SingleFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete){
-            Shot shot = new ModelUtils().toObject(bundle.getString(ImageFragment.KEY_SHOT), new TypeToken<Shot>(){});
-            Storage.deleteFile(shot.file);
+            fragment.deleteCurrentItem();
             Intent resultData = new Intent();
+            resultData.putExtra(KEY_SHOT_DELETE, true);
             setResult(RESULT_OK, resultData);
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 }
-

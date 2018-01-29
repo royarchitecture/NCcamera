@@ -39,7 +39,7 @@ public class ImageFragment extends Fragment {
         ImageFragment imageFragment = new ImageFragment();
         Bundle args = new Bundle();
         args.putString(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
-        args.putString(EXTRA_TRANSITION_NAME, transitionName);
+//        args.putString(EXTRA_TRANSITION_NAME, transitionName);
         imageFragment.setArguments(args);
         return imageFragment;
     }
@@ -55,10 +55,10 @@ public class ImageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         final Shot shot = new ModelUtils().toObject(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){});
-        String transitionName = getArguments().getString(EXTRA_TRANSITION_NAME);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageView.setTransitionName(transitionName);
-        }
+//        String transitionName = getArguments().getString(EXTRA_TRANSITION_NAME);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            imageView.setTransitionName(transitionName);
+//        }
         Glide.with(getActivity())
                 .asBitmap()
                 .load(new File(Uri.parse(shot.path).getPath()))
