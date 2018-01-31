@@ -67,6 +67,7 @@ public class ImageGalleryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_small))));
+        recyclerView.setHasFixedSize(true);
         Storage storage = Storage.getInstance(getActivity());
         List<Shot> firstData = Storage.loadData(storage.storageDir);
         adapter = new ImageGalleryAdapter(firstData, new ImageGalleryAdapter.OnClickImageListener() {

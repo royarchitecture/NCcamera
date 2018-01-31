@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.List;
@@ -35,9 +37,12 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Shot shot = data.get(position);
         final ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
+        RequestOptions req = new RequestOptions();
+        req.diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(imageViewHolder.imageView.getContext())
                 .load(new File(Uri.parse(shot.path).getPath()))
                 .thumbnail(0.5f)
+                .apply(req)
                 .into(imageViewHolder.imageView);
         imageViewHolder.clickableCover.setOnClickListener(new View.OnClickListener() {
             @Override

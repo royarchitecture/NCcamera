@@ -1,20 +1,14 @@
 package io.zirui.nccamera.view.image_detail;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,7 +33,6 @@ public class ImageFragment extends Fragment {
         ImageFragment imageFragment = new ImageFragment();
         Bundle args = new Bundle();
         args.putString(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
-//        args.putString(EXTRA_TRANSITION_NAME, transitionName);
         imageFragment.setArguments(args);
         return imageFragment;
     }
@@ -55,20 +48,10 @@ public class ImageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         final Shot shot = new ModelUtils().toObject(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){});
-//        String transitionName = getArguments().getString(EXTRA_TRANSITION_NAME);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            imageView.setTransitionName(transitionName);
-//        }
         Glide.with(getActivity())
                 .asBitmap()
                 .load(new File(Uri.parse(shot.path).getPath()))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        startPostponedEnterTransition();
-                        imageView.setImageBitmap(resource);
-                    }
-                });
+                .into(imageView);
     }
 }
 
