@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.camera.Camera;
 import io.zirui.nccamera.storage.ShotSaver;
-import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && ContextCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE)
+                && ContextCompat.checkSelfPermission(this, permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestStoragePermission();
         } else {
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(this,
-                new String[]{permission.READ_EXTERNAL_STORAGE},
+                new String[]{permission.WRITE_EXTERNAL_STORAGE},
                 REQUEST_READ_STORAGE);
     }
 

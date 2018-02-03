@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 
 import com.google.gson.reflect.TypeToken;
 

@@ -53,7 +53,6 @@ public class ShotSaver {
             if (storageDir != null) {
                 if (! storageDir.mkdirs()) {
                     if (! storageDir.exists()){
-                        System.out.println("------------------" + storageDir);
                         Log.d("CameraSample", "failed to create directory");
                         return null;
                     }
@@ -69,7 +68,6 @@ public class ShotSaver {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
         File albumF = getAlbumDir();
-        System.out.println(albumF);
         File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
         return imageF;
     }
