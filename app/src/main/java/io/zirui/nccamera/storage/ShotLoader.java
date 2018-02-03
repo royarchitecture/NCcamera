@@ -1,16 +1,11 @@
 package io.zirui.nccamera.storage;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +24,6 @@ public class ShotLoader extends AsyncTaskLoader<List<Shot>> {
                     MediaStore.Images.ImageColumns.MIME_TYPE,
                     MediaStore.Images.ImageColumns.ORIENTATION,
             };
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 100;
 
     private List<Shot> cached;
     private boolean observerRegistered = false;

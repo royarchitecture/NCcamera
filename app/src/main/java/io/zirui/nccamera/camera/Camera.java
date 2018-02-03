@@ -12,31 +12,34 @@ import java.io.File;
 import java.io.IOException;
 
 import io.zirui.nccamera.BuildConfig;
+import io.zirui.nccamera.model.Shot;
+import io.zirui.nccamera.storage.ShotSaver;
 import io.zirui.nccamera.storage.Storage;
 
 public class Camera {
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    public static void takePhoto(@NonNull Activity activity){
+    public static void takePhoto(@NonNull Activity activity, ShotSaver shotSaver){
         try {
-            dispatchTakePictureIntent(activity);
+            dispatchTakePictureIntent(activity, shotSaver);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void dispatchTakePictureIntent(@NonNull Activity activity) throws IOException {
+    private static void dispatchTakePictureIntent(@NonNull Activity activity, ShotSaver shotSaver) throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile;
             try {
-                Storage.createImageFile(activity);
-                photoFile = Storage.currentFile;
+                photoFile = shotSaver.createImageFile();
+                System.out.println(photoFile);
             } catch (IOException ex) {
                 // Error occurred while creating the File
+                ex.printStackTrace();
                 return;
             }
             // Continue only if the File was successfully created

@@ -17,4 +17,6 @@
     <string name="menu_enable_slow">Slow animations</string>
     <string name="menu_enable_overlay">Debug overlay</string>
     <string name="delete">Delete</string>
+
+    <string name="album_name">CameraApp</string>
 </resources>

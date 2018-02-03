@@ -18,11 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.camera.Camera;
+import io.zirui.nccamera.storage.ShotSaver;
 import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_STORAGE = 0;
+
+    ShotSaver shotSaver;
 
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -45,13 +48,14 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment();
         }
 
-        // App starts with camera interface
-        Camera.takePhoto(MainActivity.this);
+//        Camera.takePhoto(MainActivity.this);
+
+        shotSaver = ShotSaver.getInstance(this);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Camera.takePhoto(MainActivity.this);
+                Camera.takePhoto(MainActivity.this, shotSaver);
             }
         });
     }
@@ -63,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void replaceFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.content, ImageGalleryFragment.newInstance())
-                .commit();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .add(R.id.content, ImageGalleryFragment.newInstance())
+//                .commit();
     }
 
     @Override
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    replaceFragment();
+//                    replaceFragment();
                 } else {
                     Toast.makeText(this, "Storage permission is required", Toast.LENGTH_LONG)
                             .show();
@@ -92,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            ImageGalleryFragment imageGallery_page = (ImageGalleryFragment) getSupportFragmentManager().findFragmentById(R.id.content);
-            imageGallery_page.addShot();
+            shotSaver.handleBigCameraPhoto();
+//            ImageGalleryFragment imageGallery_page = (ImageGalleryFragment) getSupportFragmentManager().findFragmentById(R.id.content);
+//            imageGallery_page.addShot();
         }
     }
 
