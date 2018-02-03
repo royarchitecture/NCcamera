@@ -8,11 +8,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -22,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
+import io.zirui.nccamera.storage.ShotLoader;
 import io.zirui.nccamera.storage.Storage;
 import io.zirui.nccamera.utils.ModelUtils;
 import io.zirui.nccamera.view.image_detail.ImageActivity;
@@ -30,10 +39,7 @@ import io.zirui.nccamera.view.image_viewpager.ImageViewPagerFragment;
 
 import static android.app.Activity.RESULT_OK;
 
-
-public class ImageGalleryFragment extends Fragment {
-
-    public static final String PAGE_TITLE = "Gallery";
+public class ImageGalleryFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Shot>> {
 
     public static final int REQ_CODE_IMAGE_DETAIL_EDIT = 100;
 
@@ -49,7 +55,7 @@ public class ImageGalleryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        getLoaderManager().initLoader(R.id.loader_id_media_store_data, null, this);
     }
 
     @Nullable
@@ -65,22 +71,9 @@ public class ImageGalleryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_small))));
         recyclerView.setHasFixedSize(true);
-        Storage storage = Storage.getInstance(getActivity());
-        List<Shot> firstData = Storage.loadData(storage.storageDir);
-        adapter = new ImageGalleryAdapter(firstData, new ImageGalleryAdapter.OnClickImageListener() {
-            @Override
-            public void onClick(int position, Shot shot) {
-                Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
-                intent.putExtra(ImageActivity.KEY_SHOT_TITLE, shot.title);
-                intent.putExtra(ImageViewPagerFragment.EXTRA_INITIAL_POS, position);
-                intent.putExtra(ImageViewPagerFragment.EXTRA_IMAGES, ModelUtils.toString(adapter.data, new TypeToken<List<Shot>>(){}));
-                startActivityForResult(intent, ImageGalleryFragment.REQ_CODE_IMAGE_DETAIL_EDIT);
-            }
-        });
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -106,6 +99,36 @@ public class ImageGalleryFragment extends Fragment {
             loadShotTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             loadShotTask.execute();
+    }
+
+    @Override
+    public Loader<List<Shot>> onCreateLoader(int id, Bundle args) {
+        return new ShotLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Shot>> loader, List<Shot> data) {
+        RequestManager requestManager = Glide.with(this);
+        ImageGalleryAdapter adapter =
+                new ImageGalleryAdapter(getActivity(), data, requestManager, new ImageGalleryAdapter.OnClickImageListener() {
+                    @Override
+                    public void onClick(int position, Shot shot, List<Shot> data) {
+                        Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
+                        intent.putExtra(ImageActivity.KEY_SHOT_TITLE, shot.title);
+                        intent.putExtra(ImageViewPagerFragment.EXTRA_INITIAL_POS, position);
+                        intent.putExtra(ImageViewPagerFragment.EXTRA_IMAGES, ModelUtils.toString(data, new TypeToken<List<Shot>>(){}));
+                        startActivityForResult(intent, ImageGalleryFragment.REQ_CODE_IMAGE_DETAIL_EDIT);
+                    }
+                });
+        RecyclerViewPreloader<Shot> preloader =
+                new RecyclerViewPreloader<>(requestManager, adapter, adapter, 3);
+        recyclerView.addOnScrollListener(preloader);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Shot>> loader) {
+        // Do nothing.
     }
 
     private class RefreshShotTask extends AsyncTask<Void, Void, List<Shot>>{

@@ -7,4 +7,6 @@
 
     <item name="tag_holder" type="id" />
     <item name="tag_item" type="id" />
+
+    <item type="id" name="loader_id_media_store_data" />
 </resources>
