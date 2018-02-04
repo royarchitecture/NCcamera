@@ -36,7 +36,6 @@ public class Camera {
             File photoFile;
             try {
                 photoFile = shotSaver.createImageFile();
-                System.out.println(photoFile);
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 ex.printStackTrace();

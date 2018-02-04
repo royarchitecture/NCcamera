@@ -69,10 +69,11 @@ public class ShotSaver {
         String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
         File albumF = getAlbumDir();
         File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
+        mCurrentPhotoPath = imageF.getAbsolutePath();
         return imageF;
     }
 
-    private void galleryAddPic(Context context) {
+    private void galleryAddPic() {
         Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
@@ -82,7 +83,7 @@ public class ShotSaver {
 
     public void handleBigCameraPhoto() {
         if (mCurrentPhotoPath != null) {
-            galleryAddPic(context);
+            galleryAddPic();
             mCurrentPhotoPath = null;
         }
     }

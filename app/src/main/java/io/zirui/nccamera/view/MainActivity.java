@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
         shotSaver = ShotSaver.getInstance(this);
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Camera.takePhoto(MainActivity.this, shotSaver);
-//            }
-//        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Camera.takePhoto(MainActivity.this, shotSaver);
+            }
+        });
     }
 
     private void requestStoragePermission() {
