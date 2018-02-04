@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.camera.Camera;
 import io.zirui.nccamera.storage.ShotSaver;
+import io.zirui.nccamera.view.image_gallery.ImageGalleryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
         shotSaver = ShotSaver.getInstance(this);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Camera.takePhoto(MainActivity.this, shotSaver);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Camera.takePhoto(MainActivity.this, shotSaver);
+//            }
+//        });
     }
 
     private void requestStoragePermission() {
@@ -66,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void replaceFragment() {
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.content, ImageGalleryFragment.newInstance())
-//                .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.content, ImageGalleryFragment.newInstance())
+                .commit();
     }
 
     @Override
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    replaceFragment();
+                    replaceFragment();
                 } else {
                     Toast.makeText(this, "Storage permission is required", Toast.LENGTH_LONG)
                             .show();

@@ -28,9 +28,11 @@ public class ShotLoader extends AsyncTaskLoader<List<Shot>> {
     private List<Shot> cached;
     private boolean observerRegistered = false;
     private final ForceLoadContentObserver forceLoadContentObserver = new ForceLoadContentObserver();
+    private ShotSaver shotSaver;
 
     public ShotLoader(Context context) {
         super(context);
+        shotSaver = ShotSaver.getInstance(context);
     }
 
 //    @Override
@@ -95,8 +97,14 @@ public class ShotLoader extends AsyncTaskLoader<List<Shot>> {
                                        String idCol, String dateTakenCol, String dateModifiedCol, String mimeTypeCol,
                                        String orientationCol, Shot.Type type) {
         final List<Shot> data = new ArrayList<>();
-        Cursor cursor = getContext().getContentResolver()
-                .query(contentUri, projection, null, null, sortByCol + " DESC");
+        String selection = MediaStore.Images.Media.DATA + " like ?";
+        String path = shotSaver.getAlbumDir().toString();
+        System.out.println("----------------" + path);
+        String[] selectionArgs = {path + "%"};
+//        Cursor cursor = getContext().getContentResolver()
+//                .query(contentUri, projection, null, null, sortByCol + " DESC");
+        Cursor cursor = getContext().getContentResolver().query(MediaStore.Files.getContentUri( "external" ) ,projection,
+                selection, selectionArgs, sortByCol + " DESC");
 
         if (cursor == null) {
             return data;

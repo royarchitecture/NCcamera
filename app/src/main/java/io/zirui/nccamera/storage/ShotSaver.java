@@ -46,7 +46,7 @@ public class ShotSaver {
         return context.getString(R.string.album_name);
     }
 
-    private File getAlbumDir() {
+    public File getAlbumDir() {
         File storageDir = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
