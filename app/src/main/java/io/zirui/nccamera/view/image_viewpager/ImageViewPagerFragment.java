@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.ShotLoader;
 import io.zirui.nccamera.storage.Storage;
+import io.zirui.nccamera.utils.ModelUtils;
 
 
 public class ImageViewPagerFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Shot>>{
@@ -31,11 +34,11 @@ public class ImageViewPagerFragment extends Fragment implements LoaderManager.Lo
 
     @BindView(R.id.shot_view_pager) ViewPager viewPager;
 
-    public static ImageViewPagerFragment newInstance(int currentPos){
+    public static ImageViewPagerFragment newInstance(Bundle bundle){
         ImageViewPagerFragment imageViewPagerFragment = new ImageViewPagerFragment();
-        Bundle args = new Bundle();
-        args.putInt(EXTRA_INITIAL_POS, currentPos);
-        imageViewPagerFragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt(EXTRA_INITIAL_POS, currentPos);
+        imageViewPagerFragment.setArguments(bundle);
         return imageViewPagerFragment;
     }
 
@@ -56,8 +59,11 @@ public class ImageViewPagerFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new ImageViewPagerAdapter(getChildFragmentManager(), new ArrayList<Shot>());
+        List<Shot> data = ModelUtils.toObject(getArguments().getString(EXTRA_IMAGES), new TypeToken<List<Shot>>(){});
+        int currentPos = getArguments().getInt(EXTRA_INITIAL_POS);
+        adapter = new ImageViewPagerAdapter(getChildFragmentManager(), data);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(currentPos);
     }
 
     public void deleteCurrentItem(){
@@ -71,9 +77,9 @@ public class ImageViewPagerFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<List<Shot>> loader, List<Shot> data) {
-        adapter.refresh(data);
-        int currentPos = getArguments().getInt(EXTRA_INITIAL_POS);
-        viewPager.setCurrentItem(currentPos);
+//        adapter.refresh(data);
+
+//        viewPager.setCurrentItem(currentPos);
     }
 
     @Override

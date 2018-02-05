@@ -49,7 +49,6 @@ public class ImageFragment extends Fragment {
 //        final Shot shot = new ModelUtils().toObject(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){});
         Shot shot = getArguments().getParcelable(KEY_SHOT);
         Uri uri = shot.uri;
-        System.out.println("-----------------" + uri.toString());
         Glide.with(getActivity())
                 .asBitmap()
                 .load(uri)

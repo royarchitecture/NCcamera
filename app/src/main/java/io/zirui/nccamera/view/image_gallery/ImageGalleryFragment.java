@@ -100,6 +100,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                         Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
                         intent.putExtra(ImageActivity.KEY_SHOT_TITLE, shot.title);
                         intent.putExtra(ImageViewPagerFragment.EXTRA_INITIAL_POS, position);
+                        intent.putExtra(ImageViewPagerFragment.EXTRA_IMAGES, ModelUtils.toString(data, new TypeToken<List<Shot>>(){}));
                         startActivityForResult(intent, ImageGalleryFragment.REQ_CODE_IMAGE_DETAIL_EDIT);
                     }
                 });
