@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Camera App</string>
+    <string name="app_name">NCcamera</string>
     <string name="shot_image">shot image</string>
     <string name="menu_info">Info</string>
 
@@ -18,5 +18,8 @@
     <string name="menu_enable_overlay">Debug overlay</string>
     <string name="delete">Delete</string>
 
+    <string name="share_shot">Share this amazing shot!</string>
+
     <string name="album_name">CameraApp</string>
+    <string name="share">share</string>
 </resources>

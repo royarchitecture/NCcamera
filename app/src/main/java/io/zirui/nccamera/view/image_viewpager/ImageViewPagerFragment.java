@@ -57,7 +57,8 @@ public class ImageViewPagerFragment extends Fragment{
         viewPager.setCurrentItem(currentPos);
     }
 
-    public void deleteCurrentItem(){
-//        Storage.deleteFile(adapter.shots.get(viewPager.getCurrentItem()).file);
+    protected Shot getCurrentItem(){
+        return adapter.shots.get(viewPager.getCurrentItem());
     }
+
 }

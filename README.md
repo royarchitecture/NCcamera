@@ -1,6 +1,15 @@
 # NCcamera (BETA)
 A simple but efficient gallery&camera app for Android beginners.
 
+1. Use RecylerView and ViewPager implement seamless interaction between gallery and scrollable image interfaces.
+2. Use Fragments to control the content.
+3. Use AsyncTaskLoader instead of AsyncTask to load local images from specific folder.
+4. Under construction...:)
+
+<img alt="Gallery" src="http://i64.tinypic.com/3325ra1.png" width="30%">
+<img alt="Image" src="http://i64.tinypic.com/f1ihb9.png" width="30%">
+<img alt="Share" src="http://i63.tinypic.com/2croav5.png" width="30%">
+
 # Libraries Used
 
 1. [Glide](https://github.com/bumptech/glide) – By @bumptech
@@ -8,7 +17,6 @@ A simple but efficient gallery&camera app for Android beginners.
 3. [PhotoView](https://github.com/chrisbanes/PhotoView) – By @chrisbanes
 
 # License
--------
 
     Copyright 2018 Zirui Wang
     
