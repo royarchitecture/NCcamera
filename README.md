@@ -6,9 +6,11 @@ A simple but efficient gallery&camera app for Android beginners.
 3. Use AsyncTaskLoader instead of AsyncTask to load local images from specific folder.
 4. Under construction...:)
 
+<div style="display:flex;">
 <img alt="Gallery" src="http://i64.tinypic.com/3325ra1.png" width="30%">
 <img alt="Image" src="http://i64.tinypic.com/f1ihb9.png" width="30%">
 <img alt="Share" src="http://i63.tinypic.com/2croav5.png" width="30%">
+</div>
 
 # Libraries Used
 
