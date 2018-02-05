@@ -90,7 +90,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<List<Shot>> loader, List<Shot> data) {
         adapter =
-                new ImageGalleryAdapter(data, new ImageGalleryAdapter.OnClickImageListener() {
+                new ImageGalleryAdapter(getContext(), data, new ImageGalleryAdapter.OnClickImageListener() {
                     @Override
                     public void onClick(int position, List<Shot> data) {
                         Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);

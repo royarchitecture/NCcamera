@@ -33,16 +33,19 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
 
     public List<Shot> data;
     private OnClickImageListener onClickImageListener;
+    private final int screenWidth;
 
-    public ImageGalleryAdapter(List<Shot> data, OnClickImageListener onClickImageListener){
+    public ImageGalleryAdapter(Context context, List<Shot> data, OnClickImageListener onClickImageListener){
         this.data = data;
         this.onClickImageListener = onClickImageListener;
+        this.screenWidth = getScreenWidth(context);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.shot_card, parent, false);
+        view.getLayoutParams().height = screenWidth / 3;
         return new ImageViewHolder(view);
     }
 
@@ -68,6 +71,16 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    // Display#getSize(Point)
+    @SuppressWarnings("deprecation")
+    private static int getScreenWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = Preconditions.checkNotNull(wm).getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
     }
 
     public interface OnClickImageListener{
