@@ -18,11 +18,11 @@ public class ImageGalleryDecoration extends SpaceItemDecoration {
         outRect.bottom = space;
         outRect.left = space;
 
-        if (parent.getChildAdapterPosition(view) <= 1){
+        if (parent.getChildAdapterPosition(view) <= ImageGalleryFragment.MATRIX_NUMBER - 1){
             outRect.top = space;
         }
 
-        if (parent.getChildAdapterPosition(view) % 2 == 1){
+        if ((parent.getChildAdapterPosition(view) + 1) % ImageGalleryFragment.MATRIX_NUMBER == 0){
             outRect.right = space;
         }
     }

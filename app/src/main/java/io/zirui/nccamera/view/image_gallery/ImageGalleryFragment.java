@@ -36,6 +36,7 @@ import static android.app.Activity.RESULT_OK;
 public class ImageGalleryFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Shot>> {
 
     public static final int REQ_CODE_IMAGE_DETAIL_EDIT = 100;
+    public static final int MATRIX_NUMBER = 3;
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
@@ -65,7 +66,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), MATRIX_NUMBER));
         recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_small))));
         recyclerView.setHasFixedSize(true);
     }
@@ -88,20 +89,16 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<List<Shot>> loader, List<Shot> data) {
-        RequestManager requestManager = Glide.with(this);
-        ImageGalleryAdapter adapter =
-                new ImageGalleryAdapter(getActivity(), data, requestManager, new ImageGalleryAdapter.OnClickImageListener() {
+        adapter =
+                new ImageGalleryAdapter(data, new ImageGalleryAdapter.OnClickImageListener() {
                     @Override
-                    public void onClick(int position, Shot shot, List<Shot> data) {
+                    public void onClick(int position, List<Shot> data) {
                         Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
                         intent.putExtra(ImageViewPagerFragment.EXTRA_INITIAL_POS, position);
                         intent.putExtra(ImageViewPagerFragment.EXTRA_IMAGES, ModelUtils.toString(data, new TypeToken<List<Shot>>(){}));
                         startActivityForResult(intent, ImageGalleryFragment.REQ_CODE_IMAGE_DETAIL_EDIT);
                     }
                 });
-        RecyclerViewPreloader<Shot> preloader =
-                new RecyclerViewPreloader<>(requestManager, adapter, adapter, 3);
-        recyclerView.addOnScrollListener(preloader);
         recyclerView.setAdapter(adapter);
     }
 
