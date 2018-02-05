@@ -12,9 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 import io.zirui.nccamera.BuildConfig;
-import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.ShotSaver;
-import io.zirui.nccamera.storage.Storage;
 
 public class Camera {
 

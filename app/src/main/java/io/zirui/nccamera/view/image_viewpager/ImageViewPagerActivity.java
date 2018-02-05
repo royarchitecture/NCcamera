@@ -1,22 +1,13 @@
 package io.zirui.nccamera.view.image_viewpager;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
 import io.zirui.nccamera.R;
-import io.zirui.nccamera.model.Shot;
-import io.zirui.nccamera.storage.Storage;
-import io.zirui.nccamera.utils.ModelUtils;
 import io.zirui.nccamera.view.base.SingleFragmentActivity;
-import io.zirui.nccamera.view.image_detail.ImageFragment;
 
 
 public class ImageViewPagerActivity extends SingleFragmentActivity {

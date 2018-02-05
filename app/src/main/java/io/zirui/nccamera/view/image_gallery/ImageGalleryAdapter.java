@@ -90,11 +90,11 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter
                 .load(shot.uri)
                 .thumbnail(0.5f)
                 .into(imageViewHolder.imageView);
-//        Glide.with(imageViewHolder.imageView.getContext())
-//                .load(new File(Uri.parse(shot.path).getPath()))
-//                .thumbnail(0.5f)
-//                .apply(req)
-//                .into(imageViewHolder.imageView);
+        //        Glide.with(imageViewHolder.imageView.getContext())
+        //                .load(new File(Uri.parse(shot.path).getPath()))
+        //                .thumbnail(0.5f)
+        //                .apply(req)
+        //                .into(imageViewHolder.imageView);
         imageViewHolder.clickableCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,17 +153,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter
         Point size = new Point();
         display.getSize(size);
         return size.x;
-    }
-
-    public void prepend(Shot shot){
-        this.data.add(0, shot);
-        notifyDataSetChanged();
-    }
-
-    public void refreshAll(List<Shot> shots){
-        this.data.clear();
-        this.data = shots;
-        notifyDataSetChanged();
     }
 
     public interface OnClickImageListener{

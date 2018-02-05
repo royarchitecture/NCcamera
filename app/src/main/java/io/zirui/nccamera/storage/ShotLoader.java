@@ -35,7 +35,6 @@ public class ShotLoader extends AsyncTaskLoader<List<Shot>> {
         shotSaver = ShotSaver.getInstance(context);
     }
 
-//    @Override
     public void deliverResult(List<Shot> data) {
         if (!isReset() && isStarted()) {
             super.deliverResult(data);

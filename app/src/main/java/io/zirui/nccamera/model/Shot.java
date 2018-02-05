@@ -7,7 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.File;
-import java.util.Random;
 
 public class Shot implements Parcelable {
 
@@ -37,14 +36,6 @@ public class Shot implements Parcelable {
     }
 
     public Shot(){}
-
-    public Shot(File file, String path){
-        this.file = file;
-        this.path = path;
-        Random rand = new Random();
-        this.name = rand.nextInt() + "image";
-        this.title = "Nature!";
-    }
 
     protected Shot(Parcel in) {
         name = in.readString();

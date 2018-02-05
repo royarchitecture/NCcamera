@@ -2,12 +2,9 @@ package io.zirui.nccamera.view.image_gallery;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,7 +28,6 @@ import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.ShotLoader;
 import io.zirui.nccamera.storage.ShotSaver;
 import io.zirui.nccamera.utils.ModelUtils;
-import io.zirui.nccamera.view.image_detail.ImageActivity;
 import io.zirui.nccamera.view.image_viewpager.ImageViewPagerActivity;
 import io.zirui.nccamera.view.image_viewpager.ImageViewPagerFragment;
 
@@ -98,7 +94,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                     @Override
                     public void onClick(int position, Shot shot, List<Shot> data) {
                         Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
-                        intent.putExtra(ImageActivity.KEY_SHOT_TITLE, shot.title);
                         intent.putExtra(ImageViewPagerFragment.EXTRA_INITIAL_POS, position);
                         intent.putExtra(ImageViewPagerFragment.EXTRA_IMAGES, ModelUtils.toString(data, new TypeToken<List<Shot>>(){}));
                         startActivityForResult(intent, ImageGalleryFragment.REQ_CODE_IMAGE_DETAIL_EDIT);
