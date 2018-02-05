@@ -8,5 +8,6 @@
     <item name="tag_holder" type="id" />
     <item name="tag_item" type="id" />
 
-    <item type="id" name="loader_id_media_store_data" />
+    <item type="id" name="loader_id_media_store_data1" />
+    <item type="id" name="loader_id_media_store_data2" />
 </resources>

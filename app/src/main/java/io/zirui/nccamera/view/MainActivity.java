@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment();
         }
 
-//        Camera.takePhoto(MainActivity.this);
-
         shotSaver = ShotSaver.getInstance(this);
 
         fab.setOnClickListener(new View.OnClickListener() {

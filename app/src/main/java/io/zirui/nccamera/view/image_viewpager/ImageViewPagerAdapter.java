@@ -23,11 +23,17 @@ public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Shot shot = shots.get(position);
-        return ImageFragment.newInstance(shot, shot.name);
+        return ImageFragment.newInstance(shot);
     }
 
     @Override
     public int getCount() {
         return shots.size();
+    }
+
+    public void refresh(List<Shot> data){
+        this.shots.clear();
+        this.shots.addAll(data);
+        notifyDataSetChanged();
     }
 }

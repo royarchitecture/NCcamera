@@ -29,9 +29,7 @@ public class ImageViewPagerActivity extends SingleFragmentActivity {
     @Override
     protected Fragment newFragment() {
         Bundle bundle = getIntent().getExtras();
-        fragment = ImageViewPagerFragment.newInstance(bundle.getInt(ImageViewPagerFragment.EXTRA_INITIAL_POS),
-                                          ModelUtils.toObject(bundle.getString(ImageViewPagerFragment.EXTRA_IMAGES), new TypeToken<List<Shot>>(){
-                                          }));
+        fragment = ImageViewPagerFragment.newInstance(bundle.getInt(ImageViewPagerFragment.EXTRA_INITIAL_POS));
         return fragment;
     }
 

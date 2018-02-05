@@ -12,8 +12,6 @@ import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
@@ -29,10 +27,11 @@ public class ImageFragment extends Fragment {
 
     @BindView(R.id.detailed_image) PhotoView imageView;
 
-    public static ImageFragment newInstance(Shot shot, String transitionName){
+    public static ImageFragment newInstance(Shot shot){
         ImageFragment imageFragment = new ImageFragment();
         Bundle args = new Bundle();
-        args.putString(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
+        args.putParcelable(KEY_SHOT, shot);
+//        args.putString(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
         imageFragment.setArguments(args);
         return imageFragment;
     }
@@ -47,10 +46,13 @@ public class ImageFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        final Shot shot = new ModelUtils().toObject(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){});
+//        final Shot shot = new ModelUtils().toObject(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){});
+        Shot shot = getArguments().getParcelable(KEY_SHOT);
+        Uri uri = shot.uri;
+        System.out.println("-----------------" + uri.toString());
         Glide.with(getActivity())
                 .asBitmap()
-                .load(new File(Uri.parse(shot.path).getPath()))
+                .load(uri)
                 .into(imageView);
     }
 }

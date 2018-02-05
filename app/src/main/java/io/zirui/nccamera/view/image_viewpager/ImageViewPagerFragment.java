@@ -1,30 +1,28 @@
 package io.zirui.nccamera.view.image_viewpager;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
-import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
+import io.zirui.nccamera.storage.ShotLoader;
 import io.zirui.nccamera.storage.Storage;
-import io.zirui.nccamera.utils.ModelUtils;
 
 
-public class ImageViewPagerFragment extends Fragment {
+public class ImageViewPagerFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Shot>>{
 
     public static final String EXTRA_INITIAL_POS = "initial_pos";
     public static final String EXTRA_IMAGES = "images";
@@ -33,13 +31,18 @@ public class ImageViewPagerFragment extends Fragment {
 
     @BindView(R.id.shot_view_pager) ViewPager viewPager;
 
-    public static ImageViewPagerFragment newInstance(int currentPos, List<Shot> shots){
+    public static ImageViewPagerFragment newInstance(int currentPos){
         ImageViewPagerFragment imageViewPagerFragment = new ImageViewPagerFragment();
         Bundle args = new Bundle();
         args.putInt(EXTRA_INITIAL_POS, currentPos);
-        args.putString(EXTRA_IMAGES, ModelUtils.toString(shots, new TypeToken<List<Shot>>(){}));
         imageViewPagerFragment.setArguments(args);
         return imageViewPagerFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(R.id.loader_id_media_store_data2, null, this);
     }
 
     @Nullable
@@ -53,14 +56,28 @@ public class ImageViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int currentPos = getArguments().getInt(EXTRA_INITIAL_POS);
-        List<Shot> shots = ModelUtils.toObject(getArguments().getString(EXTRA_IMAGES), new TypeToken<List<Shot>>(){});
-        adapter = new ImageViewPagerAdapter(getChildFragmentManager(), shots);
+        adapter = new ImageViewPagerAdapter(getChildFragmentManager(), new ArrayList<Shot>());
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(currentPos);
     }
 
     public void deleteCurrentItem(){
         Storage.deleteFile(adapter.shots.get(viewPager.getCurrentItem()).file);
+    }
+
+    @Override
+    public Loader<List<Shot>> onCreateLoader(int id, Bundle args) {
+        return new ShotLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Shot>> loader, List<Shot> data) {
+        adapter.refresh(data);
+        int currentPos = getArguments().getInt(EXTRA_INITIAL_POS);
+        viewPager.setCurrentItem(currentPos);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Shot>> loader) {
+
     }
 }

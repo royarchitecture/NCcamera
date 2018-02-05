@@ -1,24 +1,15 @@
 package io.zirui.nccamera.model;
 
 
+
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.io.File;
 import java.util.Random;
 
-public class Shot {
-
-//    public static final Creator<Shot> CREATOR = new Creator<Shot>() {
-//        @Override
-//        public MediaStoreData createFromParcel(Parcel parcel) {
-//            return new MediaStoreData(parcel);
-//        }
-//
-//        @Override
-//        public MediaStoreData[] newArray(int i) {
-//            return new MediaStoreData[i];
-//        }
-//    };
+public class Shot implements Parcelable {
 
     public String name;
     public String path;
@@ -42,6 +33,7 @@ public class Shot {
         this.orientation = orientation;
         this.type = type;
         this.dateTaken = dateTaken;
+        this.title = "Nature!";
     }
 
     public Shot(){}
@@ -54,6 +46,30 @@ public class Shot {
         this.title = "Nature!";
     }
 
+    protected Shot(Parcel in) {
+        name = in.readString();
+        path = in.readString();
+        title = in.readString();
+        rowId = in.readLong();
+        uri = in.readParcelable(Uri.class.getClassLoader());
+        mimeType = in.readString();
+        dateModified = in.readLong();
+        orientation = in.readInt();
+        dateTaken = in.readLong();
+    }
+
+    public static final Creator<Shot> CREATOR = new Creator<Shot>() {
+        @Override
+        public Shot createFromParcel(Parcel in) {
+            return new Shot(in);
+        }
+
+        @Override
+        public Shot[] newArray(int size) {
+            return new Shot[size];
+        }
+    };
+
     public String toString() {
         return "MediaStoreData{"
                 + "rowId=" + rowId
@@ -64,6 +80,24 @@ public class Shot {
                 + ", type=" + type
                 + ", dateTaken=" + dateTaken
                 + '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(path);
+        parcel.writeString(title);
+        parcel.writeLong(rowId);
+        parcel.writeParcelable(uri, i);
+        parcel.writeString(mimeType);
+        parcel.writeLong(dateModified);
+        parcel.writeInt(orientation);
+        parcel.writeLong(dateTaken);
     }
 
     public enum Type {

@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 import io.zirui.nccamera.R;
 import io.zirui.nccamera.model.Shot;
 import io.zirui.nccamera.storage.ShotLoader;
-import io.zirui.nccamera.storage.Storage;
+import io.zirui.nccamera.storage.ShotSaver;
 import io.zirui.nccamera.utils.ModelUtils;
 import io.zirui.nccamera.view.image_detail.ImageActivity;
 import io.zirui.nccamera.view.image_viewpager.ImageViewPagerActivity;
@@ -53,7 +53,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLoaderManager().initLoader(R.id.loader_id_media_store_data, null, this);
+        getLoaderManager().initLoader(R.id.loader_id_media_store_data1, null, this);
     }
 
     @Nullable
@@ -69,7 +69,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_small))));
         recyclerView.setHasFixedSize(true);
     }
@@ -78,25 +78,11 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_CODE_IMAGE_DETAIL_EDIT && resultCode == RESULT_OK) {
-            if(data.getBooleanExtra(ImageViewPagerActivity.KEY_SHOT_DELETE, false))
-            refreshShots();
+            if(data.getBooleanExtra(ImageViewPagerActivity.KEY_SHOT_DELETE, false)){
+                ShotSaver shotSaver = ShotSaver.getInstance(getContext());
+                shotSaver.handleBigCameraPhoto();
+            }
         }
-    }
-
-    private void refreshShots(){
-        RefreshShotTask refreshShotTask = new RefreshShotTask();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            refreshShotTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            refreshShotTask.execute();
-    }
-
-    public void addShot(){
-        LoadShotTask loadShotTask = new LoadShotTask();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            loadShotTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            loadShotTask.execute();
     }
 
     @Override
@@ -114,7 +100,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                         Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
                         intent.putExtra(ImageActivity.KEY_SHOT_TITLE, shot.title);
                         intent.putExtra(ImageViewPagerFragment.EXTRA_INITIAL_POS, position);
-                        intent.putExtra(ImageViewPagerFragment.EXTRA_IMAGES, ModelUtils.toString(data, new TypeToken<List<Shot>>(){}));
                         startActivityForResult(intent, ImageGalleryFragment.REQ_CODE_IMAGE_DETAIL_EDIT);
                     }
                 });
@@ -128,43 +113,4 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     public void onLoaderReset(Loader<List<Shot>> loader) {
         // Do nothing.
     }
-
-    private class RefreshShotTask extends AsyncTask<Void, Void, List<Shot>>{
-
-        @Override
-        protected List<Shot> doInBackground(Void... voids) {
-            Storage storage = Storage.getInstance(getActivity());
-            return Storage.loadData(storage.storageDir);
-        }
-
-        @Override
-        protected void onPostExecute(List<Shot> shots) {
-            if (shots != null){
-                adapter.refreshAll(shots);
-            }else{
-                Snackbar.make(getView(), "Error", Snackbar.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private class LoadShotTask extends AsyncTask<Void, Void, Shot>{
-
-        @Override
-        protected Shot doInBackground(Void... voids) {
-            if(Storage.currentFile.length() == 0){
-                return null;
-            }
-            return new Shot(Storage.currentFile, Storage.mCurrentPhotoPath);
-        }
-
-        @Override
-        protected void onPostExecute(Shot shot) {
-            if (shot != null){
-                adapter.prepend(shot);
-            }else{
-                Snackbar.make(getView(), "Error", Snackbar.LENGTH_LONG).show();
-            }
-        }
-    }
-
 }

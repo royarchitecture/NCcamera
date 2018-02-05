@@ -99,10 +99,9 @@ public class ShotLoader extends AsyncTaskLoader<List<Shot>> {
         final List<Shot> data = new ArrayList<>();
         String selection = MediaStore.Images.Media.DATA + " like ?";
         String path = shotSaver.getAlbumDir().toString();
-        System.out.println("----------------" + path);
         String[] selectionArgs = {path + "%"};
-//        Cursor cursor = getContext().getContentResolver()
-//                .query(contentUri, projection, null, null, sortByCol + " DESC");
+        // Cursor cursor = getContext().getContentResolver()
+        //         .query(contentUri, projection, null, null, sortByCol + " DESC");
         Cursor cursor = getContext().getContentResolver().query(MediaStore.Files.getContentUri( "external" ) ,projection,
                 selection, selectionArgs, sortByCol + " DESC");
 
