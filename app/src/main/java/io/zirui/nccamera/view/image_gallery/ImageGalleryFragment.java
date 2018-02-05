@@ -67,7 +67,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), MATRIX_NUMBER));
-        recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_small))));
+        recyclerView.addItemDecoration(new ImageGalleryDecoration(getResources().getDimensionPixelSize((R.dimen.spacing_xsmall))));
         recyclerView.setHasFixedSize(true);
     }
 

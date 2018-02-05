@@ -45,7 +45,8 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.shot_card, parent, false);
-        view.getLayoutParams().height = screenWidth / 3;
+        view.setMinimumHeight(screenWidth / 3);
+        // view.getLayoutParams().height = screenWidth / 3;
         return new ImageViewHolder(view);
     }
 
@@ -55,6 +56,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
         final ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
         RequestOptions req = new RequestOptions();
         req.diskCacheStrategy(DiskCacheStrategy.ALL);
+        req.centerCrop();
         Glide.with(imageViewHolder.imageView.getContext())
                 .load(shot.uri)
                 .thumbnail(0.5f)

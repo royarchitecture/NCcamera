@@ -7,8 +7,7 @@
     <ImageView
         android:id="@+id/shot_card_image"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:scaleType="center"
+        android:layout_height="match_parent"
         android:src="@drawable/shot_placeholder"
         android:contentDescription="@string/shot_image"/>
 
