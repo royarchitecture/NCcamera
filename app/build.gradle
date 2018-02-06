@@ -38,4 +38,5 @@ dependencies {
         // Excludes the support library because it's already included by Glide.
         transitive = false
     }
+    compile 'com.bignerdranch.android:recyclerview-multiselect:0.2'
 }

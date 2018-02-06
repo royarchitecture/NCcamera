@@ -73,7 +73,7 @@ public class ShotSaver {
         return imageF;
     }
 
-    private void galleryAddPic() {
+    public void galleryAddPic() {
         Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);

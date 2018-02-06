@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.RequestBuilder;
@@ -23,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.MediaStoreSignature;
 import com.bumptech.glide.util.Preconditions;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,11 +37,15 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     public List<Shot> data;
     private OnClickImageListener onClickImageListener;
     private final int screenWidth;
+    private Context context;
+    MultiSelector mMultiSelector;
 
-    public ImageGalleryAdapter(Context context, List<Shot> data, OnClickImageListener onClickImageListener){
+    public ImageGalleryAdapter(Context context, List<Shot> data, MultiSelector mMultiSelector, OnClickImageListener onClickImageListener){
+        this.context = context;
         this.data = data;
         this.onClickImageListener = onClickImageListener;
         this.screenWidth = getScreenWidth(context);
+        this.mMultiSelector = mMultiSelector;
     }
 
     @Override
@@ -47,13 +54,14 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
                 .inflate(R.layout.shot_card, parent, false);
         view.setMinimumHeight(screenWidth / 3);
         // view.getLayoutParams().height = screenWidth / 3;
-        return new ImageViewHolder(view);
+        System.out.println("================" + data.size());
+        return new ImageViewHolder(view, mMultiSelector);
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Shot shot = data.get(position);
-        final ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
+        ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
         RequestOptions req = new RequestOptions();
         req.diskCacheStrategy(DiskCacheStrategy.ALL);
         req.centerCrop();
