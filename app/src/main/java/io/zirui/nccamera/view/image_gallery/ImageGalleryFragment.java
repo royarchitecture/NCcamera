@@ -45,7 +45,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     public static final int REQ_CODE_IMAGE_DETAIL_EDIT = 101;
     public static final int MATRIX_NUMBER = 3;
-    public static int count = 0;
 
     private ImageGalleryAdapter adapter;
 
@@ -80,7 +79,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
         recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                System.out.println("***************short click***************");
                 if (isMultiSelect)
                     multi_select(position);
                 else
@@ -98,7 +96,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                         mActionMode = ((Activity) getContext()).startActionMode(mActionModeCallBack);
                     }
                 }
-                System.out.println("***************long click***************");
                 multi_select(position);
             }
         });
@@ -163,8 +160,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     private void refreshAdapter() {
         adapter.selected_usersList = multiselect_list;
-        // getLoaderManager().getLoader(R.id.loader_id_media_store_data1).deliverResult();
-        // scanGallery();
         adapter.notifyDataSetChanged();
     }
 
@@ -177,7 +172,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     private void multi_select(int position) {
         if (mActionMode != null) {
-            System.out.println("***************!isMultiSelect***************");
             if (multiselect_list.contains(adapter.data.get(position)))
                 multiselect_list.remove(adapter.data.get(position));
             else
@@ -235,7 +229,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
             mActionMode = null;
             isMultiSelect = false;
             multiselect_list.clear();
-            Toast.makeText(getContext(), "ActionMode Finished", Toast.LENGTH_SHORT).show();
             refreshAdapter();
         }
 

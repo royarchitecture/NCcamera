@@ -1,10 +1,11 @@
 # NCcamera (BETA)
 A simple but efficient gallery&camera app for Android beginners.
 
-1. Use RecylerView and ViewPager implement seamless interaction between gallery and scrollable image interfaces.
+1. Use RecyclerView and ViewPager implement seamless interaction between gallery and scrollable image interfaces.
 2. Use Fragments to control the content.
 3. Use AsyncTaskLoader instead of AsyncTask to load local images from specific folder.
-4. Under construction...:)
+4. Support multi-selection on the gallery screen.
+5. Under construction...:)
 
 <div style="display:flex;">
 <img alt="Gallery" src="http://i64.tinypic.com/3325ra1.png" width="30%">

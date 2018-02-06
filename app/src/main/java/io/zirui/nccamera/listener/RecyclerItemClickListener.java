@@ -36,7 +36,6 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
                 if(childView != null && mListener != null)
                 {
                     mListener.onItemLongClick(childView, recyclerView.getChildLayoutPosition(childView));
-                    System.out.println("***************I'm Here***************");
                 }
             }
         });
