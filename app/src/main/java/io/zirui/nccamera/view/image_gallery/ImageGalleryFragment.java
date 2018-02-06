@@ -1,7 +1,9 @@
 package io.zirui.nccamera.view.image_gallery;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,15 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.android.multiselector.ModalMultiSelectorCallback;
-import com.bignerdranch.android.multiselector.MultiSelector;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.support.v7.view.ActionMode;
+import android.view.ActionMode;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -44,7 +43,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ImageGalleryFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Shot>> {
 
-    public static final int REQ_CODE_IMAGE_DETAIL_EDIT = 100;
+    public static final int REQ_CODE_IMAGE_DETAIL_EDIT = 101;
     public static final int MATRIX_NUMBER = 3;
 
     private ImageGalleryAdapter adapter;
@@ -52,7 +51,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     private boolean isMultiSelect = false;
     private ActionMode mActionMode;
     private Menu context_menu;
-    private MultiSelector mMultiSelector = new MultiSelector();
 
     // private ArrayList<Shot> user_list = new ArrayList<>();
     private ArrayList<Shot> multiselect_list = new ArrayList<>();
@@ -107,7 +105,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<List<Shot>> loader, List<Shot> data) {
         adapter =
-                new ImageGalleryAdapter(getContext(), data, mMultiSelector, new ImageGalleryAdapter.OnClickImageListener() {
+                new ImageGalleryAdapter(getContext(), data, multiselect_list, new ImageGalleryAdapter.OnClickImageListener() {
                     @Override
                     public void onClick(int position, List<Shot> data) {
                         Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
@@ -117,6 +115,30 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                     }
                 });
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (isMultiSelect)
+                    multi_select(position);
+                else
+                    Toast.makeText(getContext(), "Details Page", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                if (!isMultiSelect) {
+                    multiselect_list = new ArrayList<>();
+                    isMultiSelect = true;
+
+                    if (mActionMode == null) {
+                        mActionMode = ((Activity) getContext()).startActionMode(mActionModeCallBack);
+                    }
+                }
+
+                multi_select(position);
+
+            }
+        }));
     }
 
     @Override
@@ -124,82 +146,83 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
         // Do nothing.
     }
 
-//    private void refreshAdapter() {
-//        adapter.selected_usersList = multiselect_list;
-//        // getLoaderManager().getLoader(R.id.loader_id_media_store_data1).deliverResult();
-//        // scanGallery();
-//        adapter.notifyDataSetChanged();
-//    }
+    private void refreshAdapter() {
+        adapter.selected_usersList = multiselect_list;
+        // getLoaderManager().getLoader(R.id.loader_id_media_store_data1).deliverResult();
+        // scanGallery();
+        adapter.notifyDataSetChanged();
+    }
 
     private void scanGallery() {
-        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        Intent mediaScanIntent = new Intent(
+                "android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        mediaScanIntent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         getContext().sendBroadcast(mediaScanIntent);
     }
 
-    private ModalMultiSelectorCallback mActionModeCallback
-            = new ModalMultiSelectorCallback(mMultiSelector) {
+    private void multi_select(int position) {
+        if (mActionMode != null) {
+            System.out.println(adapter.data.size() + "+++++++++++++++++++++++");
+            System.out.println(position + "=======================");
+            if (multiselect_list.contains(adapter.data.get(position)))
+                multiselect_list.remove(adapter.data.get(position));
+            else
+                multiselect_list.add(adapter.data.get(position));
 
+            if (multiselect_list.size() > 0)
+                mActionMode.setTitle("" + multiselect_list.size());
+            else
+                mActionMode.setTitle("");
+
+            refreshAdapter();
+
+        }
+    }
+
+    private void deleteShots(){
+        new ShotDeletor(multiselect_list, getContext()).execute();
+        scanGallery();
+        for(int i = 0;i < multiselect_list.size(); i++){
+            adapter.data.remove(multiselect_list.get(i));
+        }
+        adapter.notifyDataSetChanged();
+        if (mActionMode != null) {
+            mActionMode.finish();
+        }
+    }
+
+    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            super.onCreateActionMode(actionMode, menu);
-            getActivity().getMenuInflater().inflate(R.menu.menu_multi_select, menu);
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.menu_multi_select, menu);
+            context_menu = menu;
             return true;
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            if (menuItem.getItemId() == R.id.action_select_delete) {
-                actionMode.finish();
-
-                List<Shot> shot_tobe_delete = new ArrayList<>();
-                for (int i = adapter.data.size(); i >= 0; i--) {
-                    if (mMultiSelector.isSelected(i, 0)) { // (1)
-                        shot_tobe_delete.add(adapter.data.get(i));
-                        new ShotDeletor(shot_tobe_delete, getContext()).execute();
-                    }
-                }
-
-                mMultiSelector.clearSelections(); // (2)
-                return true;
-
-            }
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
             return false;
         }
 
-    };
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()){
+                case R.id.action_select_delete:
+                    deleteShots();
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
-//    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
-//        @Override
-//        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-//            MenuInflater inflater = actionMode.getMenuInflater();
-//            inflater.inflate(R.menu.menu_multi_select, menu);
-//            context_menu = menu;
-//            return true;
-//        }
-//
-//        @Override
-//        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-//            switch (menuItem.getItemId()){
-//                case R.id.action_select_delete:
-//                    new ShotDeletor(multiselect_list, getContext()).execute();
-//                    return true;
-//                default:
-//                    return false;
-//            }
-//        }
-//
-//        @Override
-//        public void onDestroyActionMode(ActionMode actionMode) {
-//            mActionMode = null;
-//            isMultiSelect = false;
-//            multiselect_list = new ArrayList<>();
-//            Toast.makeText(getContext(), "ActionMode Finished", Toast.LENGTH_SHORT).show();
-//            refreshAdapter();
-//        }
-//    };
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            mActionMode = null;
+            isMultiSelect = false;
+            multiselect_list.clear();
+            Toast.makeText(getContext(), "ActionMode Finished", Toast.LENGTH_SHORT).show();
+            refreshAdapter();
+        }
+    };
 }

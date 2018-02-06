@@ -2,31 +2,19 @@ package io.zirui.nccamera.view.image_gallery;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
-import com.bignerdranch.android.multiselector.MultiSelector;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.ListPreloader;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.MediaStoreSignature;
 import com.bumptech.glide.util.Preconditions;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.zirui.nccamera.R;
@@ -38,14 +26,15 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
     private OnClickImageListener onClickImageListener;
     private final int screenWidth;
     private Context context;
-    MultiSelector mMultiSelector;
 
-    public ImageGalleryAdapter(Context context, List<Shot> data, MultiSelector mMultiSelector, OnClickImageListener onClickImageListener){
+    public List<Shot> selected_usersList;
+
+    public ImageGalleryAdapter(Context context, List<Shot> data, List<Shot> selected_usersList, OnClickImageListener onClickImageListener){
         this.context = context;
         this.data = data;
         this.onClickImageListener = onClickImageListener;
         this.screenWidth = getScreenWidth(context);
-        this.mMultiSelector = mMultiSelector;
+        this.selected_usersList = selected_usersList;
     }
 
     @Override
@@ -54,8 +43,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
                 .inflate(R.layout.shot_card, parent, false);
         view.setMinimumHeight(screenWidth / 3);
         // view.getLayoutParams().height = screenWidth / 3;
-        System.out.println("================" + data.size());
-        return new ImageViewHolder(view, mMultiSelector);
+        return new ImageViewHolder(view);
     }
 
     @Override
@@ -76,6 +64,13 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
                 onClickImageListener.onClick(holder.getAdapterPosition(), data);
             }
         });
+        if(selected_usersList.contains(shot)){
+            imageViewHolder.clickableCover.setBackgroundColor(ContextCompat.getColor(context, R.color.list_item_selected_state));
+        }else{
+            imageViewHolder.clickableCover.setBackgroundColor(0);
+            //imageViewHolder.clickableCover.setBackgroundColor(ContextCompat.getColor(context, R.color.list_item_normal_state));
+        }
+
     }
 
     @Override
