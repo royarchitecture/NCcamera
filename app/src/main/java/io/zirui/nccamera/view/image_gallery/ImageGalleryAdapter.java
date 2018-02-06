@@ -70,7 +70,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter{
             imageViewHolder.clickableCover.setBackgroundColor(0);
             //imageViewHolder.clickableCover.setBackgroundColor(ContextCompat.getColor(context, R.color.list_item_normal_state));
         }
-
     }
 
     @Override

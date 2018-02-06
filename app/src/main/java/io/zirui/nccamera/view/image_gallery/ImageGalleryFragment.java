@@ -45,6 +45,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     public static final int REQ_CODE_IMAGE_DETAIL_EDIT = 101;
     public static final int MATRIX_NUMBER = 3;
+    public static int count = 0;
 
     private ImageGalleryAdapter adapter;
 
@@ -54,6 +55,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     // private ArrayList<Shot> user_list = new ArrayList<>();
     private ArrayList<Shot> multiselect_list = new ArrayList<>();
+    private RecyclerItemClickListener recyclerItemClickListener;
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
@@ -75,6 +77,31 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         ButterKnife.bind(this, view);
+        recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                System.out.println("***************short click***************");
+                if (isMultiSelect)
+                    multi_select(position);
+                else
+                    Toast.makeText(getContext(), "Details Page", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                if (!isMultiSelect) {
+                    multiselect_list = new ArrayList<>();
+                    isMultiSelect = true;
+
+                    if (mActionMode == null) {
+
+                        mActionMode = ((Activity) getContext()).startActionMode(mActionModeCallBack);
+                    }
+                }
+                System.out.println("***************long click***************");
+                multi_select(position);
+            }
+        });
         return view;
     }
 
@@ -98,6 +125,18 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.addOnItemTouchListener(recyclerItemClickListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        recyclerView.removeOnItemTouchListener(recyclerItemClickListener);
+    }
+
+    @Override
     public Loader<List<Shot>> onCreateLoader(int id, Bundle args) {
         return new ShotLoader(getActivity());
     }
@@ -115,30 +154,6 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
                     }
                 });
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if (isMultiSelect)
-                    multi_select(position);
-                else
-                    Toast.makeText(getContext(), "Details Page", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                if (!isMultiSelect) {
-                    multiselect_list = new ArrayList<>();
-                    isMultiSelect = true;
-
-                    if (mActionMode == null) {
-                        mActionMode = ((Activity) getContext()).startActionMode(mActionModeCallBack);
-                    }
-                }
-
-                multi_select(position);
-
-            }
-        }));
     }
 
     @Override
@@ -162,8 +177,7 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
 
     private void multi_select(int position) {
         if (mActionMode != null) {
-            System.out.println(adapter.data.size() + "+++++++++++++++++++++++");
-            System.out.println(position + "=======================");
+            System.out.println("***************!isMultiSelect***************");
             if (multiselect_list.contains(adapter.data.get(position)))
                 multiselect_list.remove(adapter.data.get(position));
             else
@@ -224,5 +238,8 @@ public class ImageGalleryFragment extends Fragment implements LoaderManager.Load
             Toast.makeText(getContext(), "ActionMode Finished", Toast.LENGTH_SHORT).show();
             refreshAdapter();
         }
+
+
     };
+
 }
